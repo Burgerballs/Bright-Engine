@@ -824,7 +824,7 @@ class ConfigMenu extends FlxUIStateExt
 
 
 
-		var extraCamStuff = new ConfigOption("DYNAMIC CAMERA", genericOnOff[extraCamMovementValue?0:1] , "Moves the camera in the direction of hit notes.");
+		var extraCamStuff = new ConfigOption("CAMERA MOVE ON NOTE HIT", genericOnOff[extraCamMovementValue?0:1] , "Moves the camera in the direction of hit notes.\nIf you have this enabled then get well soon.");
 		extraCamStuff.optionUpdate = function(){
 			if (pressRight || pressLeft || pressAccept) {
 				FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -1043,17 +1043,6 @@ class ConfigMenu extends FlxUIStateExt
 
 
 
-		var showAccuracyDisplay = new ConfigOption("SHOW ACCURACY", genericOnOff[showAccuracyValue?0:1], "Shows the accuracy on the in-game HUD.");
-		showAccuracyDisplay.optionUpdate = function(){
-			if (pressRight || pressLeft || pressAccept) {
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				showAccuracyValue = !showAccuracyValue;
-			}
-			showAccuracyDisplay.setting = genericOnOff[showAccuracyValue?0:1];
-		}
-
-
-
 		var comboDisplay = new ConfigOption("COMBO DISPLAY", comboTypes[comboValue], "");
 		comboDisplay.extraData[0] = "Ratings and combo count are a part of the world and move around with the camera.";
 		comboDisplay.extraData[1] = "Ratings and combo count are a part of the hud and stay in a static position.";
@@ -1266,31 +1255,6 @@ class ConfigMenu extends FlxUIStateExt
 		}*/
 
 
-
-		var showMissesSetting = new ConfigOption("SHOW MISSES", showMissesTypes[showMissesValue], "TEMP");
-		showMissesSetting.extraData[0] = "Misses are not shown on the in-game HUD.";
-		showMissesSetting.extraData[1] = "Misses are shown on the in-game HUD.";
-		showMissesSetting.extraData[2] = "Combo breaks are shown on the in-game HUD.";
-		showMissesSetting.optionUpdate = function(){
-			if (pressRight){
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				showMissesValue += 1;
-			}
-				
-			if (pressLeft){
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				showMissesValue -= 1;
-			}
-				
-			if (showMissesValue > 2)
-				showMissesValue = 0;
-			if (showMissesValue < 0)
-				showMissesValue = 2;
-			
-			showMissesSetting.setting = showMissesTypes[showMissesValue];
-			showMissesSetting.description = showMissesSetting.extraData[showMissesValue];
-		};
-
 		var autoPauseSettings = new ConfigOption("PAUSE WHEN UNFOCUSED", genericOnOff[autoPauseValue?0:1], "Pauses the game when the application is unfocused or minimized.");
 		autoPauseSettings.optionUpdate = function(){
 			if (pressRight || pressLeft){
@@ -1316,7 +1280,7 @@ class ConfigMenu extends FlxUIStateExt
 		configOptions = [
 							[keyBinds, ghostTap, noteOffset, scrollSpeed],
 							[fpsCap, bgDim, useGPU, showFPS],
-							[downscroll, centeredNotes, noteSplash, noteGlow, showMissesSetting, showAccuracyDisplay, comboDisplay, cacheSettings],
+							[downscroll, centeredNotes, noteSplash, noteGlow, comboDisplay, cacheSettings],
 							[extraCamStuff, camBopStuff, captionsStuff, flashingLightsSettings, autoPauseSettings, hpGain, hpDrain]
 						];
 

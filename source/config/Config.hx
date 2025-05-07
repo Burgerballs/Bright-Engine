@@ -51,7 +51,7 @@ class Config
 		FlxG.save.data.showComboBreaks = false;
 		FlxG.save.data.showFPS = false;
 		FlxG.save.data.useGPU = true;
-		FlxG.save.data.extraCamMovement = true;
+		FlxG.save.data.extraCamMovement = false;
 		FlxG.save.data.camBopAmount = 0;
 		FlxG.save.data.showCaptions = true;
 		FlxG.save.data.showAccuracy = true;

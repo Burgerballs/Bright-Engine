@@ -19,13 +19,13 @@ class Conductor
 	public static var offset:Float = 0;
 
 	//Reference variables
-	static inline final defaultSafeZoneOffset:Float = 160;
+	static inline final defaultSafeZoneOffset:Float = 180;
 	static inline final defaultShitZone:Float = 135;
 	static inline final defaultBadZone:Float = 90;
 	static inline final defaultGoodZone:Float = 45;
 
 	//Actual timing variables
-	public static var safeZoneOffset:Float = 160;
+	public static var safeZoneOffset:Float = 180;
 	public static var shitZone:Float = 135;
 	public static var badZone:Float = 90;
 	public static var goodZone:Float = 45;

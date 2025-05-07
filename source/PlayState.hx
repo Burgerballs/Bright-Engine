@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxStringUtil;
 import thx.Path;
 import shaders.*;
 import ui.*;
@@ -229,6 +230,8 @@ class PlayState extends MusicBeatState
 	public var stage:BaseStage;
 
 	public var scoreTxt:FlxTextExt;
+	public var accuracyTxt:FlxTextExt;
+	public var statsTxt:FlxTextExt;
 
 	public var ccText:SongCaptions;
 
@@ -648,8 +651,8 @@ class PlayState extends MusicBeatState
 		healthBar.antialiasing = true;
 		// healthBar
 		
-		scoreTxt = new FlxTextExt(healthBarBG.x - 105, (FlxG.height * 0.9) + 36, 800, "", 22);
-		scoreTxt.setFormat(Paths.font("vcr"), 22, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt = new FlxTextExt(healthBarBG.x, healthBarBG.y + healthBarBG.height, healthBarBG.width, "", 18);
+		scoreTxt.setFormat(Paths.font("vcr"), 18, FlxColor.WHITE, FlxTextAlign.RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 
 		iconP1 = new HealthIcon(boyfriend.iconName, true);
@@ -665,6 +668,20 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		add(iconP1);
 		add(scoreTxt);
+
+		accuracyTxt = new FlxTextExt(-8, 8, 1280, "100%", 32);
+		accuracyTxt.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		accuracyTxt.scrollFactor.set();
+		accuracyTxt.borderSize = 2;
+		add(accuracyTxt);
+
+		statsTxt = new FlxTextExt(-8, accuracyTxt.y + accuracyTxt.height, 1280, "", 24);
+		statsTxt.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK);
+		statsTxt.scrollFactor.set();
+		statsTxt.borderSize = 2;
+		add(statsTxt);
+		statsTxt.antialiasing = true;
+
 		if(Config.showCaptions){ add(ccText); } 
 
 		playerStrums.cameras = [camHUD];
@@ -677,6 +694,8 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		accuracyTxt.cameras = [camHUD];
+		statsTxt.cameras = [camHUD];
 		ccText.cameras = [camHUD];
 
 		healthBar.visible = false;
@@ -2064,7 +2083,6 @@ class PlayState extends MusicBeatState
 			case "bad":
 				health += Scoring.BAD_HEAL_AMOUNT * Config.healthMultiplier * noHealMultiply;
 				songStats.badCount++;
-				comboBreak();
 			case "shit":
 				health += Scoring.SHIT_HEAL_AMOUNT * Config.healthMultiplier * noHealMultiply;
 				songStats.shitCount++;
@@ -2948,18 +2966,10 @@ class PlayState extends MusicBeatState
 
 	public dynamic function updateScoreText():Void{
 
-		scoreTxt.text = "Score:" + songStats.score;
-
-		if(Config.showMisses == 1){
-			scoreTxt.text += " | Misses:" + songStats.missCount;
-		}
-		else if(Config.showMisses == 2){
-			scoreTxt.text += " | Combo Breaks:" + songStats.comboBreakCount;
-		}
-
-		if(Config.showAccuracy){
-			scoreTxt.text += " | Accuracy:" + truncateFloat(songStats.accuracy, 2) + "%";
-		}
+		scoreTxt.text = "Score: " + FlxStringUtil.formatMoney(songStats.score, false);
+		accuracyTxt.text = truncateFloat(songStats.accuracy, 3) + "%";
+		var statsString = (songStats.comboBreakCount > songStats.missCount) ? "Combo Breaks:" + songStats.comboBreakCount : "Misses:" + songStats.missCount;
+		statsTxt.text = statsString;
 
 	}
 

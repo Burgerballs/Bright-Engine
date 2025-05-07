@@ -56,7 +56,8 @@ class Scoring
 
 	public static function calculateAccuracy(sickCount:Int, goodCount:Int, badCount:Int, shitCount:Int, missCount:Int):Float{
 		var total:Float = (sickCount) + (goodCount) + (badCount) + (shitCount) + (missCount);
-		return (total <= 0) ? 0 : Utils.clamp((((sickCount + goodCount) - missCount) / total) * 100, 0, 100);
+		var current:Float = (sickCount) + (goodCount * 0.9) + (badCount * 0.5) - (missCount);
+		return (total <= 0) ? 0 : Utils.clamp((current / total) * 100, 0, 100);
 	}
 
 }

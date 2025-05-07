@@ -34,7 +34,7 @@ class Main extends Sprite
 
 		#if sys
 		novid = Sys.args().contains("-novid");
-		flippymode = Sys.args().contains("-flippymode");
+		flippymode = Sys.args().contains("-");
 		#end
 
 		SaveManager.global();
