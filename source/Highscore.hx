@@ -146,7 +146,7 @@ class Highscore
 
 		var totalNotes = scoreData.sickCount + scoreData.goodCount + scoreData.badCount + scoreData.shitCount + scoreData.missCount;
 
-		if(totalNotes <= 0) return loss;
+		if(totalNotes <= 0) return none;
 		else if (scoreData.sickCount == totalNotes) return gold;
 		else if (scoreData.sickCount + scoreData.goodCount == totalNotes) return perfect;
 
@@ -167,7 +167,7 @@ class Highscore
 
 	}
 
-	static inline function rankToInt(rank:Rank):Int{
+	public static inline function rankToInt(rank:Rank):Int{
 		switch(rank){
 			case loss: return 1;
 			case good: return 2;
@@ -176,6 +176,17 @@ class Highscore
 			case perfect: return 5;
 			case gold: return 6;
 			default: return 0;
+		}
+	}
+	public static inline function rankToString(rank:Rank):String{
+		switch(rank){
+			case loss: return 'Loser!';
+			case good: return 'Good';
+			case great: return 'Great';
+			case excellent: return 'Excellent';
+			case perfect: return 'Perfect';
+			case gold: return 'Perfect Gold';
+			default: return 'N/A';
 		}
 	}
 }

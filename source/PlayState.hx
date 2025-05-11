@@ -177,6 +177,11 @@ class PlayState extends MusicBeatState
 
 	//End of wacky input stuff===================
 
+
+	public var currentNPS:Int = 0;
+	public var peakNPS:Int = 0;
+	public var notesWithinSeconds:Array<Float> = [];
+
 	private var autoplay:Bool = false;
 	public var preventScoreSaving:Bool = false;
 
@@ -1525,6 +1530,12 @@ class PlayState extends MusicBeatState
 				keyShitAuto();
 		 	}
 		}
+
+		notesWithinSeconds = notesWithinSeconds.filter((f:Float) -> {
+			return Math.abs(f - Conductor.songPosition) <= 1000;
+		});
+		currentNPS = notesWithinSeconds.length;
+		peakNPS = (peakNPS < currentNPS ? currentNPS : peakNPS);
 		
 		if(FlxG.keys.pressed.SHIFT && FlxG.keys.justPressed.TAB && !isStoryMode){
 			autoplay = !autoplay;
@@ -2514,6 +2525,7 @@ class PlayState extends MusicBeatState
 			for(script in scripts){ script.noteHit(boyfriend, note); }
 
 			if(!note.isSustainNote){
+				notesWithinSeconds.push(note.strumTime);
 				note.destroy();
 			}
 			else{
@@ -2560,6 +2572,7 @@ class PlayState extends MusicBeatState
 		stage.step(curStep);
 		notes.forEachAlive(function(note){ note.step(curStep); });
 		for(script in scripts){ script.step(curStep); }
+		updateScoreText();
 
 		//trace("STEP: " + curStep);
 	}
@@ -2968,8 +2981,10 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = "Score: " + FlxStringUtil.formatMoney(songStats.score, false);
 		accuracyTxt.text = truncateFloat(songStats.accuracy, 3) + "%";
-		var statsString = (songStats.comboBreakCount > songStats.missCount) ? "Combo Breaks:" + songStats.comboBreakCount : "Misses:" + songStats.missCount;
-		statsTxt.text = statsString;
+		var rank = Highscore.rankToString(Highscore.calculateRank(songStats));
+		var statsString = (songStats.comboBreakCount > songStats.missCount) ? "Combo Breaks: " + songStats.comboBreakCount : "Misses: " + songStats.missCount;
+		statsTxt.text = statsString + '\nRank: $rank';
+		statsTxt.text += '\nNPS: $currentNPS/$peakNPS';
 
 	}
 
